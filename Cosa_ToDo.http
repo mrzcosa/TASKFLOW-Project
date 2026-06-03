@@ -1,0 +1,65 @@
+@Cosa_ToDo_HostAddress = http://localhost:5267
+
+### CREATE TASK
+POST {{Cosa_ToDo_HostAddress}}/tasks
+Content-Type: application/json
+
+{
+  "title": "Finish Finals Project",
+  "dueDate": "2026-05-30",
+  "priority": "High",
+  "status": "Pending",
+  "estimatedHours": 5,
+  "rewardForCompletion": "Burger"
+}
+
+###
+
+### SHOW ALL PENDING TASKS
+GET {{Cosa_ToDo_HostAddress}}/tasks
+
+###
+
+### GET TASK BY ID
+GET {{Cosa_ToDo_HostAddress}}/tasks/1
+
+###
+
+### UPDATE TASK
+PUT {{Cosa_ToDo_HostAddress}}/tasks/3
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "Updated Finals Project",
+  "dueDate": "2026-06-01",
+  "priority": "Medium",
+  "status": "Completed",
+  "estimatedHours": 3,
+  "rewardForCompletion": "Vacation"
+}
+
+###
+
+### PATCH TASK STATUS
+PATCH {{Cosa_ToDo_HostAddress}}/tasks?id=1&status=1
+
+###
+
+### DELETE TASK
+DELETE {{Cosa_ToDo_HostAddress}}/tasks/2
+
+###
+
+### FILTER TASKS BY DATE
+GET {{Cosa_ToDo_HostAddress}}/tasks/filter/date?from=2026-05-01&to=2026-05-30
+
+###
+
+### FILTER TASKS BY STATUS
+GET {{Cosa_ToDo_HostAddress}}/tasks/filter/status?status=1
+
+###
+
+### TASK SUMMARY
+GET {{Cosa_ToDo_HostAddress}}/tasks/summary
