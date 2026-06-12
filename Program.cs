@@ -89,33 +89,25 @@ app.MapPut("/tasks/{id}", async (
 
 
 // PATCH STATUS
-app.MapPatch("/tasks", async (
+app.MapPatch("/tasks/{id}/toggle", async (
     int id,
-    int status,
     TodoDbContext db) =>
 {
     var task = await db.Tasks.FindAsync(id);
 
     if (task == null)
     {
-        return Results.NotFound(new
-        {
-            Message = "Task not found"
-        });
+        return Results.NotFound();
     }
 
     task.Status =
-        status == 1
+        task.Status == "Pending"
         ? "Completed"
         : "Pending";
 
     await db.SaveChangesAsync();
 
-    return Results.Ok(new
-    {
-        Message = "Task status updated successfully",
-        UpdatedTask = task
-    });
+    return Results.Ok(task);
 });
 
 
