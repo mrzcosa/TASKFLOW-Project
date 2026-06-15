@@ -163,6 +163,12 @@ async function toggleStatus(id) {
     }
 }
 
+function logout() {
+    if (typeof showToast === 'function')
+        showToast('Logging out...');
+    window.location.href = '/logout';
+}
+
 // ==========================================
 // FORM HELPERS
 // ==========================================
