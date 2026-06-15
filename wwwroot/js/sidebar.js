@@ -2,6 +2,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     const menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
     const views = document.querySelectorAll('.content-view');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+
+    function toggleMobileSidebar() {
+        sidebar.classList.toggle('mobile-open');
+        overlay.classList.toggle('active');
+    }
+
+    function closeMobileSidebar() {
+        sidebar.classList.remove('mobile-open');
+        overlay.classList.remove('active');
+    }
+
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleMobileSidebar);
+    if (overlay) overlay.addEventListener('click', closeMobileSidebar);
 
     /**
      * Switch between dashboard views
@@ -34,6 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!viewFound && typeof showToast === 'function') {
             showToast(`${viewId.charAt(0).toUpperCase() + viewId.slice(1)} module coming soon!`);
         }
+
+        // Close sidebar on mobile after selection
+        if (window.innerWidth <= 768) closeMobileSidebar();
     }
 
     // Add Click Listeners to Menu Items

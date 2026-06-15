@@ -80,6 +80,21 @@
             return;
         }
 
+        if (!dueDateInput.value) {
+            if (typeof showToast === 'function') showToast('Please select a due date');
+            return;
+        }
+
+        if (!estimatedInput.value || parseInt(estimatedInput.value) <= 0) {
+            if (typeof showToast === 'function') showToast('Please enter valid estimated hours');
+            return;
+        }
+
+        if (!rewardInput.value || rewardInput.value.trim() === '') {
+            if (typeof showToast === 'function') showToast('Please enter a reward');
+            return;
+        }
+
         const id = window.currentEditId;
         if(!id){
             if(typeof showToast === 'function') showToast('No task selected for edit');

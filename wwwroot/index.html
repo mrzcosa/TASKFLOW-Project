@@ -24,10 +24,13 @@
 </head>
 
 <body>
+    <!-- SIDEBAR OVERLAY -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
     <div class="app-layout">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside id="sidebar" class="sidebar">
 
         <div class="logo">
             <img src="assets/images/taskflow-logo.png" alt="TaskFlow Logo">
@@ -66,7 +69,7 @@
             <div class="profile-card">
                 <div class="profile-avatar">MR</div>
                 <div class="profile-info">
-                    <span class="profile-name">Mark RUssell</span>
+                    <span class="profile-name">Mark Russell</span>
                     <span class="profile-role">Admin</span>
                 </div>
             </div>
@@ -90,8 +93,13 @@
     ========================================== -->
 
     <div class="header">
-        <h1>DASHBOARD</h1>
-        <p>Organize. Prioritize. Get things done.</p>
+        <div class="header-top">
+            <button id="mobileMenuBtn" class="mobile-toggle-btn" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <h1>DASHBOARD</h1>
+        </div>
+        <p class="header-subtitle">Organize. Prioritize. Get things done.</p>
     </div>
 
     <!-- ==========================================
@@ -100,19 +108,60 @@
 
     <div class="cards">
 
-        <div class="card">
-            <h3>Total Tasks</h3>
-            <h2 id="totalTasks">0</h2>
+        <div class="card kpi-card">
+            <div class="kpi-icon blue"><i class="fa-solid fa-list"></i></div>
+            <div class="kpi-content">
+                <h3>Total Tasks</h3>
+                <h2 id="totalTasks">0</h2>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>Pending Tasks</h3>
-            <h2 id="pendingTasks">0</h2>
+        <div class="card kpi-card">
+            <div class="kpi-icon orange"><i class="fa-solid fa-spinner"></i></div>
+            <div class="kpi-content">
+                <h3>Pending</h3>
+                <h2 id="pendingTasks">0</h2>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>Completed Tasks</h3>
-            <h2 id="completedTasks">0</h2>
+        <div class="card kpi-card">
+            <div class="kpi-icon green"><i class="fa-solid fa-check-double"></i></div>
+            <div class="kpi-content">
+                <h3>Completed</h3>
+                <h2 id="completedTasks">0</h2>
+            </div>
+        </div>
+
+        <div id="overdueCard" class="card kpi-card">
+            <div class="kpi-icon red"><i class="fa-solid fa-circle-exclamation"></i></div>
+            <div class="kpi-content">
+                <h3>Overdue</h3>
+                <h2 id="overdueTasks">0</h2>
+            </div>
+        </div>
+
+        <div class="card kpi-card">
+            <div class="kpi-icon purple"><i class="fa-solid fa-calendar-day"></i></div>
+            <div class="kpi-content">
+                <h3>Due Today</h3>
+                <h2 id="dueToday">0</h2>
+            </div>
+        </div>
+
+        <div class="card kpi-card">
+            <div class="kpi-icon cyan"><i class="fa-solid fa-clock"></i></div>
+            <div class="kpi-content">
+                <h3>Upcoming</h3>
+                <h2 id="upcomingTasks">0</h2>
+            </div>
+        </div>
+
+        <div class="card kpi-card">
+            <div class="kpi-icon yellow"><i class="fa-solid fa-chart-pie"></i></div>
+            <div class="kpi-content">
+                <h3>Done %</h3>
+                <h2 id="completionRate">0%</h2>
+            </div>
         </div>
 
     </div>
@@ -181,6 +230,30 @@
     </div>
 
     <!-- ==========================================
+         FILTERS SECTION
+    ========================================== -->
+    <div class="section filters-container">
+        <div class="filter-group">
+            <span class="filter-label">Status:</span>
+            <div class="filter-buttons" id="statusFilters">
+                <button class="filter-btn active" data-filter="status" data-value="All">All</button>
+                <button class="filter-btn" data-filter="status" data-value="Pending">Pending</button>
+                <button class="filter-btn" data-filter="status" data-value="Completed">Completed</button>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <span class="filter-label">Priority:</span>
+            <div class="filter-buttons" id="priorityFilters">
+                <button class="filter-btn active" data-filter="priority" data-value="All">All</button>
+                <button class="filter-btn" data-filter="priority" data-value="Low">Low</button>
+                <button class="filter-btn" data-filter="priority" data-value="Medium">Medium</button>
+                <button class="filter-btn" data-filter="priority" data-value="High">High</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
          SEARCH
     ========================================== -->
 
@@ -225,7 +298,7 @@
          FOOTER
     ========================================== -->
     <footer class="app-footer">
-        <p>&copy; 2024 TaskFlow. All rights reserved. Organize. Prioritize. Get Things Done.</p>
+        <p>&copy; 2026 TaskFlow. Developed by Mark Russell Cosa. All rights reserved.</p>
     </footer>
 
 </div>

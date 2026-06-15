@@ -6,13 +6,42 @@ let tasks = [];
 // use window.currentEditId as the single source of truth for edit state
 window.currentEditId = window.currentEditId || null;
 
+// Active Filter States
+let currentStatusFilter = 'All';
+let currentPriorityFilter = 'All';
+
 // ==========================================
 // INITIALIZATION
 // ==========================================
 
 document.addEventListener('DOMContentLoaded', () => {
     loadTasks();
+    initFilters();
 });
+
+/**
+ * Setup event listeners for filter buttons
+ */
+function initFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const filterType = btn.getAttribute('data-filter');
+            const filterValue = btn.getAttribute('data-value');
+
+            // Update internal state
+            if (filterType === 'status') currentStatusFilter = filterValue;
+            if (filterType === 'priority') currentPriorityFilter = filterValue;
+
+            // Update UI Active State
+            btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            renderTasks();
+        });
+    });
+}
 
 // ==========================================
 // API FUNCTIONS
@@ -52,6 +81,21 @@ async function addTask() {
 
     if (!payload.title || payload.title.trim() === '') {
         if (typeof showToast === 'function') showToast('Please enter a task title');
+        return;
+    }
+
+    if (!payload.dueDate) {
+        if (typeof showToast === 'function') showToast('Please select a due date');
+        return;
+    }
+
+    if (!payload.estimatedHours || payload.estimatedHours <= 0) {
+        if (typeof showToast === 'function') showToast('Please enter valid estimated hours');
+        return;
+    }
+
+    if (!payload.rewardForCompletion || payload.rewardForCompletion.trim() === '') {
+        if (typeof showToast === 'function') showToast('Please enter a reward');
         return;
     }
 
@@ -227,37 +271,63 @@ function clearForm() {
 // ==========================================
 
 function updateCards() {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    
+    const nextWeek = new Date(now);
+    nextWeek.setDate(now.getDate() + 7);
 
-    const total =
-        tasks.length;
+    let counts = {
+        total: tasks.length,
+        pending: 0,
+        completed: 0,
+        overdue: 0,
+        dueToday: 0,
+        upcoming: 0
+    };
 
-    const pending =
-        tasks.filter(task =>
-            task.status === 'Pending'
-        ).length;
+    tasks.forEach(task => {
+        const taskDate = new Date(task.dueDate);
+        taskDate.setHours(0, 0, 0, 0);
 
-    const completed =
-        tasks.filter(task =>
-            task.status === 'Completed'
-        ).length;
+        if (task.status === 'Completed') {
+            counts.completed++;
+        } else {
+            counts.pending++;
+            // Check Overdue: Status Pending AND Date < Today
+            if (taskDate < now) counts.overdue++;
+        }
 
-    const totalElement =
-        document.getElementById('totalTasks');
+        // Due Today
+        if (taskDate.getTime() === now.getTime()) counts.dueToday++;
 
-    const pendingElement =
-        document.getElementById('pendingTasks');
+        // Upcoming: Next 7 days (including today)
+        if (taskDate >= now && taskDate <= nextWeek) counts.upcoming++;
+    });
 
-    const completedElement =
-        document.getElementById('completedTasks');
+    const rate = counts.total > 0 ? Math.round((counts.completed / counts.total) * 100) : 0;
 
-    if (totalElement)
-        totalElement.textContent = total;
+    // Update UI elements
+    const elements = {
+        'totalTasks': counts.total,
+        'pendingTasks': counts.pending,
+        'completedTasks': counts.completed,
+        'overdueTasks': counts.overdue,
+        'dueToday': counts.dueToday,
+        'upcomingTasks': counts.upcoming,
+        'completionRate': rate + '%'
+    };
 
-    if (pendingElement)
-        pendingElement.textContent = pending;
+    for (const [id, value] of Object.entries(elements)) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    }
 
-    if (completedElement)
-        completedElement.textContent = completed;
+    // Overdue visual warning
+    const overdueCard = document.getElementById('overdueCard');
+    if (overdueCard) {
+        counts.overdue > 0 ? overdueCard.classList.add('is-overdue') : overdueCard.classList.remove('is-overdue');
+    }
 }
 
 // ==========================================
@@ -276,9 +346,10 @@ function renderTasks() {
 
     const filteredTasks =
         tasks.filter(task =>
-            task.title
-                .toLowerCase()
-                .includes(searchText)
+            // Combine Search, Status, and Priority Filters
+            (task.title.toLowerCase().includes(searchText)) &&
+            (currentStatusFilter === 'All' || task.status === currentStatusFilter) &&
+            (currentPriorityFilter === 'All' || task.priority === currentPriorityFilter)
         );
 
     let html = '';
