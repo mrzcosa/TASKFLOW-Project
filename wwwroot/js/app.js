@@ -3,7 +3,8 @@
 // ==========================================
 
 let tasks = [];
-let currentEditId = null;
+// use window.currentEditId as the single source of truth for edit state
+window.currentEditId = window.currentEditId || null;
 
 // ==========================================
 // INITIALIZATION
@@ -54,9 +55,10 @@ async function addTask() {
         let response;
         let successMessage;
 
-        if (currentEditId) {
 
-            response = await fetch(`/tasks/${currentEditId}`, {
+        if (window.currentEditId) {
+
+            response = await fetch(`/tasks/${window.currentEditId}`, {
 
                 method: 'PUT',
 
@@ -92,7 +94,7 @@ async function addTask() {
             throw new Error(message);
         }
 
-        currentEditId = null;
+        window.currentEditId = null;
 
         clearForm();
 
@@ -334,29 +336,21 @@ function editTask(id) {
     if (!task)
         return;
 
-    document.getElementById('title').value =
-        task.title;
+    // Open edit modal and populate fields (modal.js exposes openEditModal)
+    if (typeof openEditModal === 'function') {
+        openEditModal(task);
+        currentEditId = id;
+        return;
+    }
 
-    document.getElementById('dueDate').value =
-        task.dueDate.split('T')[0];
-
-    document.getElementById('priority').value =
-        task.priority;
-
-    document.getElementById('status').value =
-        task.status;
-
-    document.getElementById('estimatedHours').value =
-        task.estimatedHours;
-
-    document.getElementById('reward').value =
-        task.rewardForCompletion;
-
-    currentEditId = id;
-
-    const addButton =
-        document.querySelector('.btn-primary');
-
-    if (addButton)
-        addButton.textContent = 'Update Task';
+    // Fallback (if modal script not loaded): populate top form
+    document.getElementById('title').value = task.title;
+    document.getElementById('dueDate').value = task.dueDate.split('T')[0];
+    document.getElementById('priority').value = task.priority;
+    document.getElementById('status').value = task.status;
+    document.getElementById('estimatedHours').value = task.estimatedHours;
+    document.getElementById('reward').value = task.rewardForCompletion;
+    window.currentEditId = id;
+    const addButton = document.querySelector('.btn-primary');
+    if (addButton) addButton.textContent = 'Update Task';
 }
