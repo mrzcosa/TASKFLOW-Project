@@ -28,7 +28,7 @@
     body{
         background:var(--bg);
         color:var(--text);
-        padding:30px;
+        padding:30px 30px 30px 0; /* keep top/right/bottom padding, flush left for sidebar */
     }
 
     .container{
@@ -99,8 +99,9 @@
 
     .form-grid{
         display:grid;
-        grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+        grid-template-columns:repeat(7,minmax(120px,1fr));
         gap:12px;
+        align-items:end;
     }
 
     input,
@@ -119,6 +120,7 @@
         padding:12px 18px;
         cursor:pointer;
         font-weight:600;
+        min-width:140px;
     }
 
     .btn-primary{
@@ -211,4 +213,134 @@
 .analytics-row canvas{
     width:100% !important;
     height:220px !important;
+}
+/* ==========================================
+   APP LAYOUT
+========================================== */
+
+.app-layout{
+    display:flex;
+    min-height:100vh;
+}
+
+/* Fix sidebar to the left edge and ensure main content is offset */
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    height:100vh;
+    z-index:40;
+}
+
+.main-content{
+    margin-left:260px; /* equal to sidebar width */
+}
+
+@media(max-width:768px){
+    .main-content{ margin-left:72px; }
+}
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+.sidebar{
+    width:260px;
+    background: linear-gradient(180deg,#071025 0%, #0b1320 100%);
+    color:var(--text);
+    padding:32px 20px;
+    border-right:1px solid rgba(255,255,255,0.03);
+    box-shadow: inset -1px 0 0 rgba(255,255,255,0.02);
+}
+
+/* LOGO */
+.logo{
+    text-align:center;
+    margin-bottom:32px;
+}
+
+.logo img{
+    width:140px;
+    max-width:100%;
+    display:inline-block;
+}
+
+/* MENU */
+.sidebar-menu{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.menu-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:rgba(255,255,255,0.9);
+    text-decoration:none;
+    padding:10px 12px;
+    border-radius:10px;
+    transition:background .18s ease, transform .12s ease, color .18s ease, box-shadow .18s ease;
+    font-weight:600;
+    font-size:15px;
+}
+
+.menu-item .icon{
+    width:36px;
+    height:36px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    color:rgba(255,255,255,0.9);
+}
+
+.menu-item .label{
+    display:inline-block;
+}
+
+.menu-item:hover{
+    background:rgba(255,255,255,0.03);
+    transform:translateX(6px);
+    box-shadow:0 8px 24px rgba(2,6,23,0.6);
+    color:var(--text);
+}
+
+.menu-item:hover .icon{
+    transform:scale(1.06);
+}
+
+.menu-item.active{
+    background: linear-gradient(90deg,#0f4bf6 0%, #2563eb 100%);
+    color:#ffffff;
+    box-shadow:0 8px 24px rgba(37,99,235,0.12);
+}
+
+.menu-item.active .icon{ color:#ffffff; }
+
+.menu-item:focus{ outline:none; box-shadow:0 0 0 4px rgba(37,99,235,0.12); }
+
+@media(max-width:768px){
+    .sidebar{ width:72px; padding:18px 10px; }
+    .logo img{ width:44px; }
+    .menu-item{ justify-content:center; padding:10px; }
+    .menu-item .label{ display:none; }
+}
+
+/* ==========================================
+   MAIN CONTENT
+========================================== */
+
+.main-content{
+
+    flex:1;
+}
+
+.container{
+
+    padding:30px;
+}
+.logo img{
+    width:180px;
+    max-width:100%;
 }

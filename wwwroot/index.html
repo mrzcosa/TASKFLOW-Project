@@ -11,8 +11,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet">
 
-    <link rel="stylesheet"
-          href="css/dashboard.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        <link rel="stylesheet"
+            href="css/dashboard.css">
 
     <link rel="stylesheet"
           href="css/toast.css">
@@ -20,6 +22,49 @@
 </head>
 
 <body>
+    <div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <img src="assets/images/taskflow-logo.png" alt="TaskFlow Logo">
+        </div>
+
+        <nav class="sidebar-menu" aria-label="Main Navigation">
+
+            <a href="#" class="menu-item active" aria-current="page">
+                <span class="icon"><i class="fa-solid fa-house"></i></span>
+                <span class="label">Dashboard</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="icon"><i class="fa-solid fa-list-check"></i></span>
+                <span class="label">Tasks</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="icon"><i class="fa-solid fa-chart-line"></i></span>
+                <span class="label">Analytics</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="icon"><i class="fa-solid fa-trophy"></i></span>
+                <span class="label">Rewards</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="icon"><i class="fa-solid fa-gear"></i></span>
+                <span class="label">Settings</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+    
 
 <div class="container">
 
@@ -28,8 +73,8 @@
     ========================================== -->
 
     <div class="header">
-        <h1>TASKFLOW</h1>
-        <p>Manage tasks, deadlines and rewards efficiently.</p>
+        <h1>DASHBOARD</h1>
+        <p>Organize. Prioritize. Get things done.</p>
     </div>
 
     <!-- ==========================================
