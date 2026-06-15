@@ -401,3 +401,17 @@
     width:180px;
     max-width:100%;
 }
+
+/* ==========================================
+   FOOTER STYLES
+========================================== */
+.app-footer {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    margin-top: 20px;
+}

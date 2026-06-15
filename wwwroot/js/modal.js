@@ -75,6 +75,11 @@
     form.addEventListener('submit', async (e)=>{
         e.preventDefault();
 
+        if (!titleInput.value || titleInput.value.trim() === '') {
+            if (typeof showToast === 'function') showToast('Task title cannot be empty');
+            return;
+        }
+
         const id = window.currentEditId;
         if(!id){
             if(typeof showToast === 'function') showToast('No task selected for edit');

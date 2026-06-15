@@ -50,6 +50,11 @@ async function addTask() {
 
     const payload = getFormData();
 
+    if (!payload.title || payload.title.trim() === '') {
+        if (typeof showToast === 'function') showToast('Please enter a task title');
+        return;
+    }
+
     try {
 
         let response;
@@ -123,9 +128,13 @@ async function deleteTask(id) {
 
     try {
 
-        await fetch(`/tasks/${id}`, {
+        const response = await fetch(`/tasks/${id}`, {
             method: 'DELETE'
         });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete task from server');
+        }
 
         if (typeof showToast === 'function')
             showToast('Task deleted successfully');
@@ -145,9 +154,13 @@ async function toggleStatus(id) {
 
     try {
 
-        await fetch(`/tasks/${id}/toggle`, {
+        const response = await fetch(`/tasks/${id}/toggle`, {
             method: 'PATCH'
         });
+
+        if (!response.ok) {
+            throw new Error('Failed to update status on server');
+        }
 
         if (typeof showToast === 'function')
             showToast('Status updated');
