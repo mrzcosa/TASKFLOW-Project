@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleMobileSidebar);
+    // Close sidebar when clicking overlay OR any menu item on mobile
     if (overlay) overlay.addEventListener('click', closeMobileSidebar);
 
     /**
